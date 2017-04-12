@@ -1,0 +1,38 @@
+<div class="ui-g">
+  <div class="ui-g-12 ui-md-4 ui-lg-4">
+    <div class="ui-widget-header" style="height: 50px;">
+      <p-dropdown [options]="countries" [(ngModel)]="selected_country" (onChange)="selectCountry($event)" [style]="{'float': 'right', 'margin-top': '10px'}"></p-dropdown>
+    </div>
+    <p-dataTable [value]="channels" [rows]="5" [paginator]="true" (onRowSelect)="selectChannel($event)" [pageLinks]="3" selectionMode="single" [(selection)]="channel">
+        <p-column field="image_url" header="Logo" [style]="{'width':'100px'}">
+            <ng-template let-col let-channel="rowData" pTemplate="body">
+                <img src="{{channel.image_url}}" style="width: 80px">
+            </ng-template>
+        </p-column>
+        <p-column field="name" header="Name"></p-column>
+    </p-dataTable>
+  </div>
+
+  <div class="ui-g-12 ui-md-8 ui-lg-8">
+    <p-dataTable [value]="programs" expandableRows="true" emptyMessage="Select a channel to display programs" [responsive]="true">
+        <p-column expander="true" styleClass="col-icon" [style]="{'width': '40px'}"></p-column>
+        <p-column field="start" header="Start (UTC)" [style]="{'width': '180px'}"></p-column>
+        <p-column field="stop" header="Stop (UTC)" [style]="{'width': '180px'}"></p-column>
+        <p-column field="title" header="Title"></p-column>
+        <ng-template let-program pTemplate="rowexpansion">
+          <div class="ui-grid ui-grid-responsive ui-fluid" style="font-size:16px;padding:20px">
+              <div *ngIf="program.category != ''" class="ui-grid-row">
+                Category:&nbsp; <b> {{ program.category }}</b><br><br>
+              </div>
+              <div class="ui-grid-row">
+                {{ program.description }}
+              </div>
+          </div>
+        </ng-template>
+    </p-dataTable>
+  </div>
+
+
+
+
+</div>
