@@ -1,6 +1,15 @@
-# Tvguideapirest
+# Tvguidedemo
+
+This project is a demo client for TVGuideAPI written in Angular 2. It uses a DEMO account to access TVGuideAPI. This account has access to 5 countries and 5 channels per country for demonstration purposes. If you are interested in check out a plan for TVGuideAPI, please visit http://www.tvguideapi.com.
 
 This project was generated with [angular-cli](https://github.com/angular/angular-cli) version 1.0.0-beta.28.3.
+
+## How to use Tvguidedemo
+First of all we need to download all required packages by running `npm install` in the root directory of the project.
+
+```
+$ npm install
+```
 
 ## Development server
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
