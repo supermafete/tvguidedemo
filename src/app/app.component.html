@@ -1,24 +1,49 @@
 <div class="ui-g">
-  <div class="ui-g-12 ui-md-4 ui-lg-4">
-    <div class="ui-widget-header" style="height: 50px;">
-      <p-dropdown [options]="countries" [(ngModel)]="selected_country" (onChange)="selectCountry($event)" [style]="{'float': 'right', 'margin-top': '10px'}"></p-dropdown>
+  <div class="ui-g-12 ui-md-12 ui-lg-12">
+    <div class="ui-g-6 ui-widget-header" style="height: 100px;">
+      <p-dropdown [options]="countries" [(ngModel)]="selected_country" (onChange)="selectCountry($event)" placeholder="Select a Country" [style]="{'margin-top': '10px', 'width': '100%'}"></p-dropdown>
+      <p-dropdown *ngIf="selected_country" [(ngModel)]="channeldd" [options]="channels" placeholder="Select a Channel" (onChange)="selectChannel($event)" [style]="{'width': '100%'}">
+        <ng-template let-channel pTemplate="item">
+            <div class="ui-helper-clearfix" style="position: relative;height: 35px;">
+                <img src="{{channel.image_url}}" style="width:40px;top:1px;left:5px;float:left"/>
+                <div style="font-size:14px;float:left; margin-left: 10px; margin-top:8px;">{{ channel.label | slice:0:13 }}</div>
+            </div>
+        </ng-template>
+      </p-dropdown>
     </div>
-    <p-dataTable [value]="channels" [rows]="5" [paginator]="true" (onRowSelect)="selectChannel($event)" [pageLinks]="3" selectionMode="single" [(selection)]="channel">
+
+    <div class="ui-g-6 ui-widget-header" style="height: 100px; text-align: center">
+      <img src="{{ channel.image_url }}" style="height: 100%;">
+    </div>
+    <!-- <p-dataTable [value]="channels" [rows]="5" [paginator]="true" (onRowSelect)="selectChannel($event)" [pageLinks]="3" selectionMode="single" [(selection)]="channel">
         <p-column field="image_url" header="Logo" [style]="{'width':'100px'}">
             <ng-template let-col let-channel="rowData" pTemplate="body">
                 <img src="{{channel.image_url}}" style="width: 80px">
             </ng-template>
         </p-column>
         <p-column field="name" header="Name"></p-column>
-    </p-dataTable>
+    </p-dataTable> -->
   </div>
 
-  <div class="ui-g-12 ui-md-8 ui-lg-8">
+  <div *ngIf="channel" class="ui-g-12 ui-md-12 ui-lg-12">
     <p-dataTable [value]="programs" expandableRows="true" emptyMessage="Select a channel to display programs" [responsive]="true">
+        <p-column field="start" header="Start" [style]="{'width': '130px'}">
+          <template let-program="rowData" pTemplate type="body">
+            {{ program.start | slice:11:16 }}
+          </template>
+        </p-column>
+        <p-column field="stop" header="Stop" [style]="{'width': '130px'}">
+          <template let-program="rowData" pTemplate type="body">
+            {{ program.stop | slice:11:16 }}
+          </template>
+        </p-column>
+        <p-column field="title" header="Title">
+          <template let-program="rowData" pTemplate type="body">
+            {{ program.title | slice:0:20 }}
+          </template>
+        </p-column>
         <p-column expander="true" styleClass="col-icon" [style]="{'width': '40px'}"></p-column>
-        <p-column field="start" header="Start (UTC)" [style]="{'width': '180px'}"></p-column>
-        <p-column field="stop" header="Stop (UTC)" [style]="{'width': '180px'}"></p-column>
-        <p-column field="title" header="Title"></p-column>
+
         <ng-template let-program pTemplate="rowexpansion">
           <div class="ui-grid ui-grid-responsive ui-fluid" style="font-size:16px;padding:20px">
               <div *ngIf="program.category != ''" class="ui-grid-row">

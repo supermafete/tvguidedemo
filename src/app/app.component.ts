@@ -11,7 +11,11 @@ import { TVGuideAPIService } from './tvguideapi.service'
 export class AppComponent implements OnInit {
   access_token = null
   channels = []
-  channel = null
+  channeldd = ""
+  channel = {
+    value: "Select country and channel",
+    image_url: "http://www.dnbr.com.br/dnbr/uploads/2015/02/39-128.png"
+  }
   programs = []
   countries = [
     {
@@ -43,6 +47,7 @@ export class AppComponent implements OnInit {
     this.apiService.login().subscribe(
       res => {
         this.access_token = res.access_token
+        this.selected_country = "gb"
         this.selectCountry({ value: "gb" })
       }
     )
@@ -51,14 +56,36 @@ export class AppComponent implements OnInit {
   selectCountry(event) {
     this.apiService.channelList(this.access_token, event.value).subscribe(
       res => {
-        this.channels = res
-        console.log(res)
+        this.channels = []
+        var self = this
+        res.forEach(function(channel) {
+          self.channels.push({
+            image_url: channel.image_url,
+            value: channel.id,
+            label: channel.name
+          })
+        })
+
+        this.channeldd = this.channels[0].value
+
+        self.selectChannel({
+          value: self.channels[0].value
+        })
       }
     )
   }
 
   selectChannel(event) {
-    this.apiService.channelPrograms(this.access_token, event.data.id).subscribe(
+    var self=this
+    this.programs = []
+    this.channels.forEach(function(channel) {
+      if (channel.value == event.value) {
+        self.channel = channel
+        return
+      }
+    })
+
+    this.apiService.channelPrograms(this.access_token, event.value).subscribe(
       res => {
         this.programs = res
         console.log(res)
